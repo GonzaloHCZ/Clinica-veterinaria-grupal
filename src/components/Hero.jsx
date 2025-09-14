@@ -1,15 +1,45 @@
+import HeroBg from "../assets/fotos/clinica2.jpg"; // tu imagen de fondo
+
 export default function Hero() {
   return (
-    <section className="flex flex-col items-center justify-center text-center py-20 bg-blue-100">
-      <h2 className="text-4xl font-bold text-blue-700">
-        Bienvenido a nuestra Clínica Veterinaria 🐶🐱
-      </h2>
-      <p className="mt-4 text-lg text-gray-700">
-        Cuidamos la salud y bienestar de tus mascotas con amor y profesionalismo.
-      </p>
-      <button className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-        Reserva tu cita
-      </button>
+    <section
+      className="relative h-screen flex flex-col items-center justify-center text-center bg-blue-100"
+      style={{
+        backgroundImage: `url(${HeroBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      {/* Overlay con degradado */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-900/70 via-blue-800/50 to-blue-900/70"></div>
+
+      {/* Contenido */}
+      <div className="relative z-10 max-w-3xl px-6">
+        <h2 className="text-5xl md:text-6xl font-extrabold text-white drop-shadow-lg leading-tight">
+          Bienvenido a nuestra <span className="text-yellow-300">Clínica Veterinaria</span> 🐶🐱
+        </h2>
+        <p className="mt-6 text-lg md:text-xl text-gray-100">
+          Cuidamos la salud y bienestar de tus mascotas con <span className="font-semibold text-yellow-200">amor</span> y profesionalismo.
+        </p>
+        <button className="mt-8 bg-yellow-400 text-blue-900 px-8 py-3 rounded-xl font-semibold shadow-lg hover:bg-yellow-300 hover:scale-105 transition-transform duration-300">
+          Reserva tu cita
+        </button>
+      </div>
+
+      {/* Decoración inferior tipo onda */}
+      <div className="absolute bottom-0 w-full overflow-hidden leading-none">
+        <svg
+          viewBox="0 0 500 150"
+          preserveAspectRatio="none"
+          className="w-full h-20"
+        >
+          <path
+            d="M0.00,49.98 C150.00,150.00 349.90,-49.98 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"
+            className="fill-white"
+          ></path>
+        </svg>
+      </div>
     </section>
   );
 }
+
