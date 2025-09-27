@@ -33,7 +33,7 @@ export default function App() {
                   <Route path="/servicios" element={<Servicios />} />
                   <Route path="/nosotros" element={<Nosotros />} />
                   <Route path="/contacto" element={<Contacto />} />
-                  <Route path="/reservar" element={<Formulario />} />
+                  {/* Route path="/reservar" element={<Formulario />} */}
                 </Routes>
               </main>
               <Footer />
@@ -43,6 +43,9 @@ export default function App() {
 
         {/* Login */}
         <Route path="/login" element={<Login />} />
+
+        {/* Login */}
+        <Route path="/reservar" element={<Formulario />} />
 
         {/* Layout admin */}
         <Route
