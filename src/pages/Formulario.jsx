@@ -5,24 +5,48 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export default function ReservaCita() {
-  const [step, setStep] = useState(1);
+  const navigate = useNavigate();
+  const usuario = JSON.parse(localStorage.getItem("user")); // 👈 ya logueado
+  const [step, setStep] = useState(2); // arranca desde el paso 2
   const [form, setForm] = useState({
-  usuario: "",
-  nombreMascota: "",
-  tipoMascota: "",
-  servicio: "",
-  fecha: null,
-  hora: "",
+    nombreMascota: "",
+    tipoMascota: "",
+    servicio: "",
+    fecha: null,
+    hora: "",
   });
 
-  // Horas disponibles (ejemplo)
   const horasDisponibles = ["09:00", "10:00", "11:00", "15:00", "16:00"];
 
-  // Avanzar paso
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
+
+  const handleConfirmar = async () => {
+    const response = await fetch("http://localhost/mi-clinica-vet/backend/api/reservas.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        usuario: usuario.id_usuario, // 👈 ya tienes el usuario
+        nombreMascota: form.nombreMascota,
+        tipoMascota: form.tipoMascota,
+        servicio: form.servicio,
+        fecha: form.fecha.toISOString().split("T")[0],
+        hora: form.hora,
+      }),
+    });
+
+    const result = await response.json();
+    console.log(result);
+
+    if (result.status === "success") {
+      setStep(6);
+    } else {
+      alert("Error: " + result.message);
+    }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-green-100 to-blue-100">
@@ -34,26 +58,6 @@ export default function ReservaCita() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            {/* PASO 1 - Inicio Sesión */}
-            {step === 1 && (
-              <div className="space-y-4">
-                <h2 className="text-2xl font-bold text-center text-green-700">
-                  Bienvenido 🐾
-                </h2>
-                <Input
-                  placeholder="Correo electrónico"
-                  value={form.usuario}
-                  onChange={(e) =>
-                    setForm({ ...form, usuario: e.target.value })
-                  }
-                />
-                <Input type="password" placeholder="Contraseña" />
-                <Button className="w-full" onClick={nextStep}>
-                  Ingresar
-                </Button>
-              </div>
-            )}
-
             {/* PASO 2 - Mascota y Servicio */}
             {step === 2 && (
               <div className="space-y-4">
@@ -91,7 +95,7 @@ export default function ReservaCita() {
                 </Select>
 
                 <div className="flex justify-between">
-                  <Button variant="outline" onClick={prevStep}>
+                  <Button variant="outline" onClick={() => navigate("/login")}>
                     Atrás
                   </Button>
                   <Button onClick={nextStep}>Continuar</Button>
@@ -174,7 +178,7 @@ export default function ReservaCita() {
                   <Button variant="outline" onClick={prevStep}>
                     Atrás
                   </Button>
-                  <Button onClick={nextStep} className="bg-green-600">
+                  <Button onClick={handleConfirmar} className="bg-green-600">
                     Confirmar
                   </Button>
                 </div>
@@ -199,4 +203,3 @@ export default function ReservaCita() {
     </div>
   );
 }
-

@@ -23,7 +23,7 @@ export default function Hero() {
         </p>
 
         <Link
-          to="/reservar"
+          to="/login"
           className="mt-8 inline-block bg-yellow-400 text-blue-900 px-8 py-3 rounded-xl font-semibold shadow-lg hover:bg-yellow-300 hover:scale-105 transition-transform duration-300"
         >
           Reserva tu cita

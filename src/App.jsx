@@ -51,7 +51,7 @@ export default function App() {
         <Route
           path="/admin"
           element={
-            <ProtectedRoute role="Administrador">
+            <ProtectedRoute role="admin">
               <AdminLayout>
                 <Dashboard />
               </AdminLayout>
@@ -61,7 +61,7 @@ export default function App() {
         <Route
           path="/admin/usuarios"
           element={
-            <ProtectedRoute role="Administrador">
+            <ProtectedRoute role="admin">
               <AdminLayout>
                 <Usuarios />
               </AdminLayout>
@@ -71,7 +71,7 @@ export default function App() {
         <Route
           path="/admin/citas"
           element={
-            <ProtectedRoute role="Administrador">
+            <ProtectedRoute role="admin">
               <AdminLayout>
                 <Citas />
               </AdminLayout>

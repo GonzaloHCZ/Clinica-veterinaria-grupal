@@ -1,53 +1,56 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleLogin = async () => {
+    const response = await fetch("http://localhost/mi-clinica-vet/backend/api/login.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ correo: usuario, contrasena: password }),
+    });
 
-    // Aquí deberías validar con tu backend
-    if (email === "admin@demo.com" && password === "123456") {
-      localStorage.setItem("isAuth", "true"); // simulamos login
-      navigate("/admin"); // redirige al panel
+    const result = await response.json();
+    console.log(result);
+
+    if (result.status === "success") {
+      localStorage.setItem("user", JSON.stringify(result.usuario));
+
+      if (result.usuario.rol === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/reservar"); // 👈 manda al flujo de reservas
+      }
     } else {
-      alert("Credenciales incorrectas");
+      alert(result.message);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow-md w-80"
-      >
-        <h2 className="text-xl font-bold mb-4 text-center">Iniciar Sesión</h2>
-        <input
-          type="email"
-          placeholder="Correo"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-2 mb-3 border rounded"
-          required
+    <div className="flex justify-center items-center min-h-screen bg-green-100">
+      <div className="bg-white p-6 rounded shadow-md w-96">
+        <h2 className="text-2xl font-bold text-center mb-4">Iniciar Sesión</h2>
+        <Input
+          placeholder="Correo electrónico"
+          value={usuario}
+          onChange={(e) => setUsuario(e.target.value)}
         />
-        <input
+        <Input
           type="password"
           placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 mb-3 border rounded"
-          required
         />
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
-        >
-          Entrar
-        </button>
-      </form>
+        <Button className="w-full mt-4" onClick={handleLogin}>
+          Ingresar
+        </Button>
+      </div>
     </div>
   );
 }
+
