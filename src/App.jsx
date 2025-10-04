@@ -10,7 +10,7 @@ import Formulario from "./pages/Formulario";
 // Admin
 import Dashboard from "./pages/Admin/Dashboard";
 import Usuarios from "./pages/Admin/Usuarios";
-import Citas from "./pages/Admin/Citas";
+import AdminReservas from "./pages/Admin/AdminReservas"; // 👈 tu nueva página
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminLayout from "./layouts/AdminLayout";
 
@@ -33,7 +33,6 @@ export default function App() {
                   <Route path="/servicios" element={<Servicios />} />
                   <Route path="/nosotros" element={<Nosotros />} />
                   <Route path="/contacto" element={<Contacto />} />
-                  {/* Route path="/reservar" element={<Formulario />} */}
                 </Routes>
               </main>
               <Footer />
@@ -43,41 +42,21 @@ export default function App() {
 
         {/* Login */}
         <Route path="/login" element={<Login />} />
-
-        {/* Login */}
         <Route path="/reservar" element={<Formulario />} />
 
-        {/* Layout admin */}
+        {/* Layout admin con Outlet */}
         <Route
           path="/admin"
           element={
             <ProtectedRoute role="admin">
-              <AdminLayout>
-                <Dashboard />
-              </AdminLayout>
+              <AdminLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/admin/usuarios"
-          element={
-            <ProtectedRoute role="admin">
-              <AdminLayout>
-                <Usuarios />
-              </AdminLayout>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/citas"
-          element={
-            <ProtectedRoute role="admin">
-              <AdminLayout>
-                <Citas />
-              </AdminLayout>
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="usuarios" element={<Usuarios />} />
+          <Route path="citas" element={<AdminReservas />} /> {/* 👈 Post-it */}
+        </Route>
       </Routes>
     </Router>
   );
